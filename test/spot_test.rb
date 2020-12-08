@@ -60,6 +60,7 @@ class SpotTest < Minitest::Test
 
     assert_equal @compact_spot.park(@car), "Sorry! Spot's already taken"
     refute_equal @compact_spot.vehicle, @car
+    assert_equal @compact_spot.vehicle, @motorcycle
     assert_equal @car.parked, false
 
     @large_spot.park(@car)
@@ -69,5 +70,15 @@ class SpotTest < Minitest::Test
     assert_equal @large_spot.empty, false
 
     assert_equal @motorcycle_spot.park(@bus), "Can't park that here"
+  end
+
+  def test_bus_cant_park_unless_row_checked_flag_is_true
+    assert_equal @large_spot.park(@bus), "Sorry can't park bus in a single spot, park in the row"
+    assert_nil @large_spot.vehicle
+    assert_equal @bus.parked, false
+
+    @large_spot.park(@bus, true)
+    assert_equal @large_spot.vehicle, @bus
+    assert_equal @bus.parked, true
   end
 end

@@ -1,22 +1,21 @@
 class Spot
   attr_reader :type
-  attr_accessor :vehicle, :empty, :row_position, :row
+  attr_accessor :vehicle, :empty, :row_position
 
   def initialize(type = 'compact')
     @type = type
     @empty = true
     @vehicle = nil
     @row_position = nil
-    @row = nil
   end
 
   def valid_spot?(vehicle)
     # this method evaluates if a certain vehicle can park in type of spot
-    if vehicle.name == 'motorcycle'
+    if vehicle.name == 'motorcycle' && @empty
       true
-    elsif vehicle.name == 'car' && (@type == 'compact' || @type == 'large')
+    elsif vehicle.name == 'car' && (@type == 'compact' || @type == 'large') && @empty
       true
-    elsif vehicle.name == 'bus' && @type == 'large'
+    elsif vehicle.name == 'bus' && @type == 'large' && @empty
       # only validating type of spot we will worry about consecutive spots in row class
       true
       # valid_row_position?(vehicle.name)
@@ -25,10 +24,10 @@ class Spot
     end
   end
 
-  def park(vehicle)
-    # if valid_spot?(vehicle) && spot.valid_spots
-    #   park_bus(valid_spots)
-    if valid_spot?(vehicle) && @empty
+  def park(vehicle, row_checked = false)
+    if row_checked == false && vehicle.name == 'bus' && valid_spot?(vehicle)
+      "Sorry can't park bus in a single spot, park in the row"
+    elsif valid_spot?(vehicle)
       vehicle.park
       @empty = false
       @vehicle = vehicle
@@ -39,7 +38,7 @@ class Spot
     end
   end
 
-  # refactor everything from here down into row logic 
+  # refactor everything from here down into row logic
 
   def valid_row_position?(vehicle)
     # goal find 5 consecutive large spots
