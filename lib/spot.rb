@@ -6,6 +6,7 @@ class Spot
     @type = type
     @empty = true
     @vehicle = nil
+    # @row_position = nil
   end
 
   def valid?(vehicle)

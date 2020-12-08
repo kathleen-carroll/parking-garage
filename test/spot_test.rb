@@ -53,8 +53,4 @@ class SpotTest < Minitest::Test
     assert_equal @large_spot.valid?(@bus), false #bus needs 5 spots need to test this in the row
     assert_equal @large_spot.valid?(@car), true
   end
-
-  def test_only_certain_vehicles_can_park_and_in_empty_spots
-
-  end
 end

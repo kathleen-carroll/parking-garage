@@ -7,8 +7,14 @@ class Vehicle
   end
 
   def park(spot)
-    @parked = true
-    spot.empty = false
-    spot.vehicle = self
+    if spot.valid?(self) && spot.empty
+      @parked = true
+      spot.empty = false
+      spot.vehicle = self
+    elsif !spot.empty
+      "Sorry! Spot's already taken"
+    else
+      "Can't park that here"
+    end
   end
 end
