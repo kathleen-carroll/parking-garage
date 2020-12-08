@@ -7,7 +7,9 @@ class Vehicle
   end
 
   def park(spot)
-    if spot.valid?(self) && spot.empty
+    if spot.valid?(self) && spot.valid_spots(self)
+      park_bus(spot.valid_spots(self))
+    elsif spot.valid?(self) && spot.empty
       @parked = true
       spot.empty = false
       spot.vehicle = self
@@ -16,5 +18,9 @@ class Vehicle
     else
       "Can't park that here"
     end
+  end
+
+  def park_bus(spots)
+    spots.each {|spot| park(spot)}
   end
 end
