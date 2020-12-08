@@ -1,88 +1,42 @@
 class Spot
   attr_reader :type
-  attr_accessor :vehicle, :empty, :row_position
+  attr_accessor :vehicle, :empty
 
   def initialize(type = 'compact')
     @type = type
     @empty = true
     @vehicle = nil
-    @row_position = nil
   end
 
   def valid_spot?(vehicle)
-    # this method evaluates if a certain vehicle can park in type of spot
+    # only checks if a certain vehicle can park in type of spot and if its empty not full bus parking check
     if vehicle.name == 'motorcycle' && @empty
       true
     elsif vehicle.name == 'car' && (@type == 'compact' || @type == 'large') && @empty
       true
     elsif vehicle.name == 'bus' && @type == 'large' && @empty
-      # only validating type of spot we will worry about consecutive spots in row class
+      # only validating type of spot we will worry about consecutive spots and full bus parking validation in row class
       true
-      # valid_row_position?(vehicle.name)
     else
       false
     end
   end
 
   def park(vehicle, row_checked = false)
+    # checks to see if bus is trying to park in single spot and prevents it, want different error message here from invalid spot
     if row_checked == false && vehicle.name == 'bus' && valid_spot?(vehicle)
       "Sorry can't park bus in a single spot, park in the row"
+    # validates spot and allows to park, buses will bipass this by setting row_checked to true in bus parking method in row class
     elsif valid_spot?(vehicle)
       vehicle.park
       @empty = false
       @vehicle = vehicle
+    # if spot is not available print that as a message
     elsif !@empty
       "Sorry! Spot's already taken"
+    # if validation fails print that as a message
     else
       "Can't park that here"
     end
   end
-
-  # refactor everything from here down into row logic
-
-  def valid_row_position?(vehicle)
-    # goal find 5 consecutive large spots
-    # split spots array to be within 4 spaces of spot
-    # find all the large consecutive spots
-
-
-    # require "pry"; binding.pry
-    # valid_spots
-    valid_spots(vehicle).count == 5
-
-
-    # counter = @row_position
-
-    # @row.spots.each_with_index do |spot, i|
-    #   if i + 1 <= @row_position + 4
-    #   end
-    # end
-  end
-
-  def valid_spots(vehicle)
-    # require "pry"; binding.pry
-    return false if vehicle != 'bus'
-    lower_limit_i = @row_position - 3
-    upper_limit_i = @row_position + 3
-
-    lower_limit_i = 0 if lower_limit_i < 0
-    surrounding_spots = @row.spots[lower_limit_i..upper_limit_i]
-
-    valid_spots = []
-    surrounding_spots.each do |spot|
-      if spot.empty && spot.type == 'large'
-        valid_spots << spot
-      else
-        valid_spots = []
-      end
-    end
-
-    valid_spots
-  end
-
-  # from vehicle class need to refactor
-  #
-  # def park_bus(spots)
-  #   spots.each {|spot| park(spot)}
-  # end
 end
