@@ -10,6 +10,8 @@ class SpotTest < Minitest::Test
     @compact_spot = Spot.new('compact')
     @large_spot = Spot.new('large')
     @motorcycle = Vehicle.new('motorcycle')
+    @bus = Vehicle.new('bus')
+    @car = Vehicle.new('car')
   end
 
   def test_it_exists
@@ -38,6 +40,21 @@ class SpotTest < Minitest::Test
     assert_equal @motorcycle_spot.empty, false
   end
 
+  def test_it_can_validate_spots_for_vehicle_types
+    assert_equal @motorcycle_spot.valid?(@motorcycle), true
+    assert_equal @motorcycle_spot.valid?(@bus), false
+    assert_equal @motorcycle_spot.valid?(@car), false
+
+    assert_equal @compact_spot.valid?(@motorcycle), true
+    assert_equal @compact_spot.valid?(@bus), false
+    assert_equal @compact_spot.valid?(@car), true
+
+    assert_equal @large_spot.valid?(@motorcycle), true
+    assert_equal @large_spot.valid?(@bus), false #bus needs 5 spots need to test this in the row
+    assert_equal @large_spot.valid?(@car), true
+  end
+
   def test_only_certain_vehicles_can_park_and_in_empty_spots
+
   end
 end

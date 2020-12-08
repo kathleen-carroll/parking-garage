@@ -7,4 +7,14 @@ class Spot
     @empty = true
     @vehicle = nil
   end
+
+  def valid?(vehicle)
+    if vehicle.name == 'motorcycle'
+      true
+    elsif vehicle.name == 'car' && (@type == 'compact' || @type == 'large')
+      true
+    else
+      false
+    end
+  end
 end
