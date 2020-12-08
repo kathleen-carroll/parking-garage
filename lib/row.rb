@@ -18,6 +18,10 @@ class Row
     @spots.find_all {|spot| spot.empty}
   end
 
+  def full_spots
+    @spots.find_all {|spot| !spot.empty}
+  end
+
   def parked_cars
     @spots.map{|spot| spot.vehicle if !spot.empty}.compact
   end

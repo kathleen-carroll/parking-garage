@@ -39,11 +39,15 @@ class RowTest < Minitest::Test
     assert_equal @row2.spots.first.empty, false
   end
 
-  def test_it_can_find_empty_spots
+  def test_it_can_find_empty_spots_and_full_spots
     assert_equal @row2.empty_spots, @spots
 
     @row2.spots.first.park(@motorcycle)
-    assert_equal @row2.empty_spots, @spots[1..-1]
+    assert_equal @spots[1..-1], @row2.empty_spots
+    assert_equal [@spots.first], @row2.full_spots
+
+    @row2.spots[2].park(@car)
+    assert_equal [@spots[0], @spots.last], @row2.full_spots
   end
 
   def test_it_can_find_parked_cars
