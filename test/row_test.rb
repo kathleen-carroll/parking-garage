@@ -15,14 +15,13 @@ class RowTest < Minitest::Test
     @motorcycle = Vehicle.new('motorcycle')
   end
 
-  def skip test_it_exists
+  def test_it_exists
     assert_instance_of Row, @row1
   end
 
-  def skip test_it_has_spots_and_can_accept_spots
+  def test_it_has_spots_and_can_accept_spots
     assert_equal @row1.spots, []
     assert_equal @row2.spots, @spots
-    assert_equal @row2.spots.first.row_position, 1
     # maybe refactor to take a number of spots and type
     # have add spots or change spots method
 
@@ -31,21 +30,21 @@ class RowTest < Minitest::Test
     # row can have update method
   end
 
-  def skip test_cars_and_motorcycles_can_park
+  def test_cars_and_motorcycles_can_park
     @row2.spots.first.park(@motorcycle)
 
     assert_equal @row2.spots.first.vehicle, @motorcycle
     assert_equal @row2.spots.first.empty, false
   end
 
-  def skip test_it_can_find_empty_spots
+  def test_it_can_find_empty_spots
     assert_equal @row2.empty_spots, @spots
 
     @row2.spots.first.park(@motorcycle)
     assert_equal @row2.empty_spots, @spots[1..-1]
   end
 
-  def skip test_it_can_find_parked_cars
+  def test_it_can_find_parked_cars
     assert_equal @row2.parked_cars, []
 
     @row2.spots.first.park(@motorcycle)
@@ -64,7 +63,7 @@ class RowTest < Minitest::Test
 
     assert_equal row.spots.count, 5
 
-    row.park_bus(bus)
+    row.park_bus(bus, row.spots.first)
 
     # row.spots.first.park(bus)
     # bus.park(spots.first)
