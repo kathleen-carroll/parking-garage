@@ -10,7 +10,8 @@ class Spot
     @row = nil
   end
 
-  def valid?(vehicle)
+  def valid_spot?(vehicle)
+    # this method evaluates if a certain vehicle can park in type of spot
     if vehicle.name == 'motorcycle'
       true
     elsif vehicle.name == 'car' && (@type == 'compact' || @type == 'large')
