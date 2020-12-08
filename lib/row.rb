@@ -7,8 +7,11 @@ class Row
   end
 
   def add(spots)
-    # spots.each_with_index {|spot, i| spot.row_position = i + 1}
     @spots = spots
+  end
+
+  def add_spot(spot)
+    @spots << spot
   end
 
   def empty_spots
@@ -20,6 +23,8 @@ class Row
   end
 
   def park_bus(bus, spot)
+    # in order to park a bus there must be 5 large consecutive spots in a row
+    # if there are 5 spots update each spot with bus vehicle using row_checked flag
     if valid_spots(spot).count == 5
       row_checked = true
       valid_spots(spot).each {|spot| spot.park(bus, row_checked)}
@@ -28,37 +33,12 @@ class Row
     end
   end
 
-  # refactor everything from here down into row logic
-
-  def valid_row_position?(vehicle)
+  def valid_spots(spot)
     # goal find 5 consecutive large spots
     # split spots array to be within 4 spaces of spot
-    # find all the large consecutive spots
+    # find all the large consecutive spots and return first 5 valid parking spots as results
 
-
-    # require "pry"; binding.pry
-    # valid_spots
-    valid_spots(vehicle).count == 5
-
-
-    # counter = @row_position
-
-    # @row.spots.each_with_index do |spot, i|
-    #   if i + 1 <= @row_position + 4
-    #   end
-    # end
-  end
-
-  def valid_spots(spot)
-    # return false if vehicle != 'bus'  #guard statement against other vehicles trying to be parked as buses when dont need same validation
-    i = @spots.index(spot)
-
-    lower_limit_i = i - 4
-    upper_limit_i = i + 4
-
-    lower_limit_i = 0 if lower_limit_i < 0
-    surrounding_spots = @spots[lower_limit_i..upper_limit_i]
-
+    surrounding_spots = consecutive_spots(spot)
     valid_spots = []
     surrounding_spots.each do |spot|
       if spot.empty && spot.type == 'large'
@@ -68,6 +48,18 @@ class Row
       end
     end
 
-    valid_spots
+    valid_spots[0..4]  #grab only the first 5 valid spots
+  end
+
+  def consecutive_spots(spot)
+    # find only range of spots around current parking spot by finding spots + or - 4 index positions away
+    # or at the start/end of spots array whichever comes first
+    i = @spots.index(spot)
+
+    lower_limit_i = i - 4
+    upper_limit_i = i + 4
+    lower_limit_i = 0 if lower_limit_i < 0
+
+    @spots[lower_limit_i..upper_limit_i]
   end
 end
