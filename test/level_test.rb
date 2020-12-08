@@ -51,4 +51,14 @@ class LevelTest < Minitest::Test
 
     assert_equal [@motorcycle, @car], @level1.parked_cars
   end
+
+  def test_it_can_find_full_spots
+    assert_equal [], @level1.full_spots
+
+    @spot1.park(@motorcycle)
+    @spot4.park(@car)
+
+    assert_equal [@spot1, @spot4], @level1.full_spots
+  end
+
 end
