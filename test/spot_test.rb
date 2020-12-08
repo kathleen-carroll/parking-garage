@@ -9,7 +9,7 @@ class SpotTest < Minitest::Test
     @motorcycle_spot = Spot.new('motorcycle')
     @compact_spot = Spot.new('compact')
     @large_spot = Spot.new('large')
-    @motorcyle = Vehicle.new('motorcyle')
+    @motorcycle = Vehicle.new('motorcycle')
   end
 
   def test_it_exists
@@ -31,10 +31,11 @@ class SpotTest < Minitest::Test
     assert_equal @large_spot.type, 'large'
   end
 
-  def skip test_vehicle_can_park
+  def test_vehicle_can_park
     @motorcycle.park(@motorcycle_spot)
 
     assert_equal @motorcycle_spot.vehicle, @motorcycle
+    assert_equal @motorcycle_spot.empty, false
   end
 
   def test_only_certain_vehicles_can_park_and_in_empty_spots

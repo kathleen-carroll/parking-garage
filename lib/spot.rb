@@ -1,5 +1,6 @@
 class Spot
-  attr_reader :type, :vehicle, :empty
+  attr_reader :type
+  attr_accessor :vehicle, :empty
 
   def initialize(type = 'compact')
     @type = type
