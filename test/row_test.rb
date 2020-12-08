@@ -51,6 +51,9 @@ class RowTest < Minitest::Test
 
     @row2.spots.first.park(@motorcycle)
     assert_equal @row2.parked_cars, [@motorcycle]
+
+    @row2.spots.last.park(@car)
+    assert_equal @row2.parked_cars, [@motorcycle, @car]
   end
 
   def test_buses_can_park_in_multiple_spots

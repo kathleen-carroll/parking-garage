@@ -6,4 +6,12 @@ class Level
     @rows = rows
   end
 
+  def empty_spots
+    @rows.map{|row| row.empty_spots}.flatten
+  end
+
+  def parked_cars
+    @rows.map{|row| row.parked_cars}.flatten
+  end
+
 end
