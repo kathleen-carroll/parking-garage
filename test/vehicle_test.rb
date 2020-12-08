@@ -26,27 +26,4 @@ class VehicleTest < Minitest::Test
     @car.park
     assert_equal @car.parked, true
   end
-
-  def skip test_it_can_park_in_spot
-    @motorcycle.park(@spot)
-
-    assert_equal @spot.vehicle, @motorcycle
-    assert_equal @motorcycle.parked, true
-  end
-
-  def skip test_only_certain_vehicles_can_park_and_in_empty_spots
-    @motorcycle.park(@compact_spot)
-
-    assert_equal @car.park(@compact_spot), "Sorry! Spot's already taken"
-    refute_equal @compact_spot.vehicle, @car
-    assert_equal @car.parked, false
-
-    @car.park(@large_spot)
-
-    assert_equal @large_spot.vehicle, @car
-    assert_equal @car.parked, true
-    assert_equal @large_spot.empty, false
-
-    assert_equal @bus.park(@motorcycle_spot), "Can't park that here"
-  end
 end

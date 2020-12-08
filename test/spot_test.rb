@@ -33,11 +33,12 @@ class SpotTest < Minitest::Test
     assert_equal @large_spot.type, 'large'
   end
 
-  def test_vehicle_can_park
-    @motorcycle.park(@motorcycle_spot)
+  def test_vehicle_can_park_and_vehicle_is_parked
+    @motorcycle_spot.park(@motorcycle)
 
     assert_equal @motorcycle_spot.vehicle, @motorcycle
     assert_equal @motorcycle_spot.empty, false
+    assert_equal @motorcycle.parked, true
   end
 
   def test_it_can_validate_spots_for_vehicle_types
@@ -52,5 +53,21 @@ class SpotTest < Minitest::Test
     assert_equal @large_spot.valid?(@motorcycle), true
     assert_equal @large_spot.valid?(@bus), false #bus needs 5 spots need to test this in the row
     assert_equal @large_spot.valid?(@car), true
+  end
+
+  def skip test_only_certain_vehicles_can_park_and_in_empty_spots
+    @motorcycle.park(@compact_spot)
+
+    assert_equal @car.park(@compact_spot), "Sorry! Spot's already taken"
+    refute_equal @compact_spot.vehicle, @car
+    assert_equal @car.parked, false
+
+    @car.park(@large_spot)
+
+    assert_equal @large_spot.vehicle, @car
+    assert_equal @car.parked, true
+    assert_equal @large_spot.empty, false
+
+    assert_equal @bus.park(@motorcycle_spot), "Can't park that here"
   end
 end
