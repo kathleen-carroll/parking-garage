@@ -33,6 +33,20 @@ class SpotTest < Minitest::Test
     assert_equal @large_spot.type, 'large'
   end
 
+  def test_it_can_validate_spots_for_vehicle_types
+    assert_equal @motorcycle_spot.valid_spot?(@motorcycle), true
+    assert_equal @motorcycle_spot.valid_spot?(@bus), false
+    assert_equal @motorcycle_spot.valid_spot?(@car), false
+
+    assert_equal @compact_spot.valid_spot?(@motorcycle), true
+    assert_equal @compact_spot.valid_spot?(@bus), false
+    assert_equal @compact_spot.valid_spot?(@car), true
+
+    assert_equal @large_spot.valid_spot?(@motorcycle), true
+    assert_equal @large_spot.valid_spot?(@bus), true #bus needs 5 spots need to test this in the row
+    assert_equal @large_spot.valid_spot?(@car), true
+  end
+
   def test_vehicle_can_park_and_vehicle_is_parked
     @motorcycle_spot.park(@motorcycle)
 
@@ -41,33 +55,19 @@ class SpotTest < Minitest::Test
     assert_equal @motorcycle.parked, true
   end
 
-  def test_it_can_validate_spots_for_vehicle_types
-    assert_equal @motorcycle_spot.valid?(@motorcycle), true
-    assert_equal @motorcycle_spot.valid?(@bus), false
-    assert_equal @motorcycle_spot.valid?(@car), false
+  def test_only_certain_vehicles_can_park_and_in_empty_spots
+    @compact_spot.park(@motorcycle)
 
-    assert_equal @compact_spot.valid?(@motorcycle), true
-    assert_equal @compact_spot.valid?(@bus), false
-    assert_equal @compact_spot.valid?(@car), true
-
-    assert_equal @large_spot.valid?(@motorcycle), true
-    assert_equal @large_spot.valid?(@bus), false #bus needs 5 spots need to test this in the row
-    assert_equal @large_spot.valid?(@car), true
-  end
-
-  def skip test_only_certain_vehicles_can_park_and_in_empty_spots
-    @motorcycle.park(@compact_spot)
-
-    assert_equal @car.park(@compact_spot), "Sorry! Spot's already taken"
+    assert_equal @compact_spot.park(@car), "Sorry! Spot's already taken"
     refute_equal @compact_spot.vehicle, @car
     assert_equal @car.parked, false
 
-    @car.park(@large_spot)
+    @large_spot.park(@car)
 
     assert_equal @large_spot.vehicle, @car
     assert_equal @car.parked, true
     assert_equal @large_spot.empty, false
 
-    assert_equal @bus.park(@motorcycle_spot), "Can't park that here"
+    assert_equal @motorcycle_spot.park(@bus), "Can't park that here"
   end
 end

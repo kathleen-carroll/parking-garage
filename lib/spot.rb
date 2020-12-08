@@ -17,11 +17,29 @@ class Spot
     elsif vehicle.name == 'car' && (@type == 'compact' || @type == 'large')
       true
     elsif vehicle.name == 'bus' && @type == 'large'
-      valid_row_position?(vehicle.name)
+      # only validating type of spot we will worry about consecutive spots in row class
+      true
+      # valid_row_position?(vehicle.name)
     else
       false
     end
   end
+
+  def park(vehicle)
+    # if valid_spot?(vehicle) && spot.valid_spots
+    #   park_bus(valid_spots)
+    if valid_spot?(vehicle) && @empty
+      vehicle.park
+      @empty = false
+      @vehicle = vehicle
+    elsif !@empty
+      "Sorry! Spot's already taken"
+    else
+      "Can't park that here"
+    end
+  end
+
+  # refactor everything from here down into row logic 
 
   def valid_row_position?(vehicle)
     # goal find 5 consecutive large spots
@@ -43,6 +61,7 @@ class Spot
   end
 
   def valid_spots(vehicle)
+    # require "pry"; binding.pry
     return false if vehicle != 'bus'
     lower_limit_i = @row_position - 3
     upper_limit_i = @row_position + 3
@@ -63,20 +82,6 @@ class Spot
   end
 
   # from vehicle class need to refactor
-
-  # def park(spot)
-  #   if spot.valid?(self) && spot.valid_spots(self)
-  #     park_bus(spot.valid_spots(self))
-  #   elsif spot.valid?(self) && spot.empty
-  #     @parked = true
-  #     spot.empty = false
-  #     spot.vehicle = self
-  #   elsif !spot.empty
-  #     "Sorry! Spot's already taken"
-  #   else
-  #     "Can't park that here"
-  #   end
-  # end
   #
   # def park_bus(spots)
   #   spots.each {|spot| park(spot)}
