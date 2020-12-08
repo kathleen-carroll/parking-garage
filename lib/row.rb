@@ -23,7 +23,7 @@ class Row
   end
 
   def parked_cars
-    @spots.map{|spot| spot.vehicle if !spot.empty}.compact
+    full_spots.map{|spot| spot.vehicle}.compact
   end
 
   def park_bus(bus, spot)
