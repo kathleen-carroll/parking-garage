@@ -12,6 +12,7 @@ class RowTest < Minitest::Test
     spot3 = Spot.new('large')
     @spots = [spot1, spot2, spot3]
     @row2 = Row.new(2, @spots)
+    @motorcycle = Vehicle.new('motorcycle')
   end
 
   def skip test_it_exists
@@ -30,7 +31,28 @@ class RowTest < Minitest::Test
     # row can have update method
   end
 
-  def test_it_can_evaluate_valid_bus_parking
+  def skip test_cars_and_motorcycles_can_park
+    @row2.spots.first.park(@motorcycle)
+
+    assert_equal @row2.spots.first.vehicle, @motorcycle
+    assert_equal @row2.spots.first.empty, false
+  end
+
+  def skip test_it_can_find_empty_spots
+    assert_equal @row2.empty_spots, @spots
+
+    @row2.spots.first.park(@motorcycle)
+    assert_equal @row2.empty_spots, @spots[1..-1]
+  end
+
+  def skip test_it_can_find_parked_cars
+    assert_equal @row2.parked_cars, []
+
+    @row2.spots.first.park(@motorcycle)
+    assert_equal @row2.parked_cars, [@motorcycle]
+  end
+
+  def test_buses_can_park_in_multiple_spots
     bus = Vehicle.new('bus')
     spots = []
 
@@ -42,7 +64,10 @@ class RowTest < Minitest::Test
 
     assert_equal row.spots.count, 5
 
-    bus.park(spots.first)
+    row.park_bus(bus)
+
+    # row.spots.first.park(bus)
+    # bus.park(spots.first)
     # require "pry"; binding.pry
 
     assert_equal bus.parked, true
