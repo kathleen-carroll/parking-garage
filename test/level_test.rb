@@ -61,4 +61,23 @@ class LevelTest < Minitest::Test
     assert_equal [@spot1, @spot4], @level1.full_spots
   end
 
+  def test_it_can_find_percent_full
+    assert_equal 0, @level1.percent_full
+
+    @spot1.park(@motorcycle)
+    @spot4.park(@car)
+
+    assert_equal 33, @level1.percent_full
+  end
+
+  def test_it_can_find_open_rows
+    car2 = Vehicle.new('car')
+    assert_equal [@row1, @row2], @level1.open_rows
+
+    @spot1.park(@car)
+    @spot2.park(@motorcycle)
+    @spot3.park(car2)
+
+    assert_equal [@row2], @level1.open_rows
+  end
 end
