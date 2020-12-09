@@ -1,5 +1,8 @@
 class Garage
-  def initialize
-    @levels = []
-  end 
+  attr_reader :name, :levels
+
+  def initialize(name, levels)
+    @name = name
+    @levels = levels
+  end
 end
