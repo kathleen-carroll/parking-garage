@@ -62,12 +62,15 @@ class GarageTest < Minitest::Test
     end
 
     @row1_L3 = Row.new(1, @spots_L3)
-    @row2_L3 = Row.new(2, @spots_L3)
+    @row2_L3 = Row.new(2, @spots2_L3)
 
     @level3 = Level.new(3, [@row1_L3, @row2_L3])
 
 
     @garage = Garage.new("Mall Parking", [@level1, @level2, @level3])
+
+    @car = Vehicle.new("car")
+    @bus = Vehicle.new("bus")
   end
 
   def test_it_exists_and_has_name
@@ -83,17 +86,23 @@ class GarageTest < Minitest::Test
   end
 
   def test_different_vehicles_can_park
-    car = Vehicle.new("car")
-    bus = Vehicle.new("bus")
+    @spots2_L3[8].park(@car)
 
-    @spots2_L3[8].park(car)
+    assert_equal true, @car.parked
 
-    assert_equal true, car.parked
-
-    @row1.park_bus(bus, @spots[8])
-    assert_equal true, bus.parked
+    @row1.park_bus(@bus, @spots[8])
+    assert_equal true, @bus.parked
   end
 
   def test_it_can_evaluate_garage_metrics
+    assert_equal [], @garage.full_spots
+
+    @spots2_L3[8].park(@car)
+    assert_equal true, @car.parked
+    @row1.park_bus(@bus, @spots[8])
+
+    assert_equal 84, @garage.empty_spots.count
+    assert_equal (6.0/90.0 * 100).round, @garage.percent_full
+    assert_equal 17, @garage.percent_full_by_level(1)
   end
 end
