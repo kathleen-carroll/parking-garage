@@ -90,8 +90,7 @@ class GarageTest < Minitest::Test
 
     assert_equal true, car.parked
 
-    @row1.park_bus(bus, @spots[5])
-    # fix error why it didnt work with @spots[6])
+    @row1.park_bus(bus, @spots[8])
     assert_equal true, bus.parked
   end
 

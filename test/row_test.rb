@@ -175,4 +175,25 @@ class RowTest < Minitest::Test
     assert_equal spots[4].empty, true
     assert_equal @motorcycle.parked, true
   end
+
+  def test_it_can_find_open_spots_when_other_types_are_in_plus_minus_5_spaces
+    spots = []
+
+    6.times do
+      spots << Spot.new('compact')
+    end
+    5.times do
+      spots << Spot.new('large')
+    end
+    7.times do
+      spots << Spot.new('compact')
+    end
+
+    row = Row.new(13, spots)
+    spot = spots[9]
+    row.park_bus(@bus, spot)
+    assert_equal true, @bus.parked
+    assert_equal @bus, spots[6].vehicle
+    assert_equal @bus, spots[10].vehicle
+  end
 end

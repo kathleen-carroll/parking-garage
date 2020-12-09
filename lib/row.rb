@@ -29,6 +29,7 @@ class Row
   def park_bus(bus, spot)
     # in order to park a bus there must be 5 large consecutive spots in a row
     # if there are 5 spots update each spot with bus vehicle using row_checked flag
+    # require "pry"; binding.pry
     if valid_spots(spot).count == 5
       row_checked = true
       valid_spots(spot).each {|spot| spot.park(bus, row_checked)}
@@ -38,6 +39,7 @@ class Row
   end
 
   def valid_spots(spot)
+    # require "pry"; binding.pry
     # goal find 5 consecutive large spots
     # split spots array to be within 4 spaces of spot
     # find all the large consecutive spots and return first 5 valid parking spots as results
@@ -45,8 +47,12 @@ class Row
     surrounding_spots = consecutive_spots(spot)
     valid_spots = []
     surrounding_spots.each do |spot|
-      if spot.empty && spot.type == 'large'
+      if valid_spots.count == 5
+        return valid_spots
+      elsif spot.empty && spot.type == 'large'
         valid_spots << spot
+      # elsif (!spot.empty || spot.type != 'large') && valid_spots.count >= 5
+      #   return valid_spots
       else
         valid_spots = []
       end
